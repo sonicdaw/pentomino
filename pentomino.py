@@ -24,6 +24,9 @@ class Piece:
             print
             a = np.fliplr(a)
 
+board_columns = 8
+board_rows = 5
+
 pp = [Piece('11111000', 	2),
       Piece('111100010001', 3),
       Piece('11111100', 	2),
@@ -32,8 +35,6 @@ pp = [Piece('11111000', 	2),
       Piece('001111',    	2),
       Piece('1011',  		2),
       Piece('0000111111', 	2)]
-
-
 
 # パズルの解を求める
 def piece_all(pp):
@@ -76,6 +77,6 @@ def chk(board, pp, x, y, lvl):
     return False
 
 counter = 0
-board = np.zeros((10, 6))
+board = np.zeros((board_columns, board_rows))
 chk(board, pp, 0, 0, 0)
 print '解合計', counter
