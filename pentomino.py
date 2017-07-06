@@ -5,28 +5,37 @@ import numpy as np
 
 # すべてのピース形状をPieceオブジェクトの配列に保存する
 class Piece:
-    def __init__(self, s, h,m,n):
+    def __init__(self, s, h):
         a = np.array(map(int, s)).reshape(h, -1)
         self.used = False
         self.form = []
-        for i in range(m):
-            for j in range(n):
-                self.form.append((a, a.argmax()))
+        for i in range(2):
+            for j in range(4):
+                match = False
+                for k in self.form:
+                    piece_matrix, piece_origin = k
+                    if len(a) == len(piece_matrix) and len(a[0]) == len(piece_matrix[0]):
+                        if np.allclose(a, piece_matrix):
+                            match = True
+                if match == False:
+                    self.form.append((a, a.argmax()))
+                    print a
                 a = np.rot90(a)
+            print
             a = np.fliplr(a)
 
-pp = [Piece('010111010', 3,1,1),
-      Piece('111101',    2,1,4),
-      Piece('110011001', 3,1,4),
-      Piece('110011010', 3,1,2),
-      Piece('110010011', 3,2,2),
-      Piece('111110',    2,2,4),
-      Piece('11100011',  2,2,4),
-      Piece('11110100',  2,2,4),
-      Piece('111010010', 3,1,4),
-      Piece('11111000',  2,2,4),
-      Piece('111100100', 3,1,4),
-      Piece('11111',     1,1,2)]
+pp = [Piece('010111010', 3),
+      Piece('111101',    2),
+      Piece('110011001', 3),
+      Piece('110011010', 3),
+      Piece('110010011', 3),
+      Piece('111110',    2),
+      Piece('11100011',  2),
+      Piece('11110100',  2),
+      Piece('111010010', 3),
+      Piece('11111000',  2),
+      Piece('111100100', 3),
+      Piece('11111',     1)]
 
 
 
@@ -53,7 +62,7 @@ def chk(board, pp, x, y, lvl):
         board_section += piece_matrix * (i + 1)
         pp[i].used = True
         # すべてのピースを置ききったらTrueを返す（recursiveコールの終了）
-        if lvl == 11:
+        if lvl == len(pp) - 1:
             counter += 1
             print 'No', counter
             print np.rot90(board)
